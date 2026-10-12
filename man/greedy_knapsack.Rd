@@ -4,7 +4,7 @@
 \alias{greedy_knapsack}
 \title{Greedy Approximation for the Knapsack Problem}
 \usage{
-greedy_knapsack(x, W)
+greedy_knapsack(x, W, fast = FALSE)
 }
 \arguments{
 \item{x}{A \code{\link[base]{data.frame}} with values and weights

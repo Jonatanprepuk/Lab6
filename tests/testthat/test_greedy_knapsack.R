@@ -21,38 +21,40 @@ test_that("functions rejects errounous input.", {
   expect_error(greedy_knapsack(x = knapsack_objects[1:8, ], W = -3500))
 })
 
-test_that("Function return correct results.", {
-  gk <- greedy_knapsack(x = knapsack_objects[1:8, ], W = 3500)
-  expect_equal(round(gk$value), 15428)
-  expect_true(all(round(gk$elements) %in% c(3, 8)))
+for (fast in c(FALSE, TRUE)) {
+  test_that("Function return correct results.", {
+    gk <- greedy_knapsack(x = knapsack_objects[1:8, ], W = 3500, fast = fast)
+    expect_equal(round(gk$value), 15428)
+    expect_true(all(round(gk$elements) %in% c(3, 8)))
 
-  gk <- greedy_knapsack(x = knapsack_objects[1:12, ], W = 3500)
-  expect_equal(round(gk$value), 15428)
-  expect_true(all(round(gk$elements) %in% c(3, 8)))
+    gk <- greedy_knapsack(x = knapsack_objects[1:12, ], W = 3500, fast = fast)
+    expect_equal(round(gk$value), 15428)
+    expect_true(all(round(gk$elements) %in% c(3, 8)))
 
-  gk <- greedy_knapsack(x = knapsack_objects[1:8, ], W = 2000)
-  expect_equal(round(gk$value), 15428)
-  expect_true(all(round(gk$elements) %in% c(3, 8)))
+    gk <- greedy_knapsack(x = knapsack_objects[1:8, ], W = 2000, fast = fast)
+    expect_equal(round(gk$value), 15428)
+    expect_true(all(round(gk$elements) %in% c(3, 8)))
 
-  gk <- greedy_knapsack(x = knapsack_objects[1:12, ], W = 2000)
-  expect_equal(round(gk$value), 15428)
-  expect_true(all(round(gk$elements) %in% c(3, 8)))
+    gk <- greedy_knapsack(x = knapsack_objects[1:12, ], W = 2000, fast = fast)
+    expect_equal(round(gk$value), 15428)
+    expect_true(all(round(gk$elements) %in% c(3, 8)))
 
-  st <- system.time(gk <- greedy_knapsack(x = knapsack_objects[1:16, ], W = 2000))
-  expect_true(as.numeric(st)[2] <= 0.01)
+    st <- system.time(gk <- greedy_knapsack(x = knapsack_objects[1:16, ], W = 2000, fast = fast))
+    expect_true(as.numeric(st)[2] <= 0.01)
 
-  gk <- greedy_knapsack(x = knapsack_objects[1:800, ], W = 3500)
-  expect_equal(round(gk$value), 192647)
+    gk <- greedy_knapsack(x = knapsack_objects[1:800, ], W = 3500, fast = fast)
+    expect_equal(round(gk$value), 192647)
 
-  gk <- greedy_knapsack(x = knapsack_objects[1:1200, ], W = 3500)
-  expect_equal(round(gk$value), 270290)
+    gk <- greedy_knapsack(x = knapsack_objects[1:1200, ], W = 3500, fast = fast)
+    expect_equal(round(gk$value), 270290)
 
-  # OWN tests
-  gk <- greedy_knapsack(x = knapsack_objects[1:10, ], W = 1)
-  expect_equal(gk$value, 0)
-  expect_equal(gk$elements, NA)
+    # OWN tests
+    gk <- greedy_knapsack(x = knapsack_objects[1:10, ], W = 1, fast = fast)
+    expect_equal(gk$value, 0)
+    expect_equal(gk$elements, NA)
 
-  gk <- greedy_knapsack(x = knapsack_objects2, W = 1000)
-  expect_equal(gk$value, 1000)
-  expect_equal(gk$elements, 2)
-})
+    gk <- greedy_knapsack(x = knapsack_objects2, W = 1000, fast = fast)
+    expect_equal(gk$value, 1000)
+    expect_equal(gk$elements, 2)
+  })
+}

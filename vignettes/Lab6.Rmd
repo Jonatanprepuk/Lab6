@@ -41,3 +41,15 @@ microbenchmark(brute_force_knapsack(knapsack_objects[1:16, ], W = 3500))
 ```{r}
 microbenchmark(greedy_knapsack(knapsack_objects[1:1000000, ], W = 5000))
 ```
+
+### Greedy RCpp
+
+```{r}
+x <- knapsack_objects[1:1000000, ]
+
+microbenchmark(
+  slow = greedy_knapsack(x, W = 5000, fast = FALSE),
+  fast = greedy_knapsack(x, W = 5000, fast = TRUE),
+  times = 20
+)
+```

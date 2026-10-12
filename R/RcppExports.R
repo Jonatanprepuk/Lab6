@@ -7,7 +7,7 @@
 #' @param y Second integer.
 #' @return The sum of x and y.
 #' @export
-add_cpp <- function(x, y) {
-    .Call(`_Lab6_add_cpp`, x, y)
+fast_greedy_knapsack <- function(v, w, W) {
+    .Call(`_Lab6_fast_greedy_knapsack`, v, w, W)
 }
 

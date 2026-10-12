@@ -10,21 +10,22 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// add_cpp
-int add_cpp(int x, int y);
-RcppExport SEXP _Lab6_add_cpp(SEXP xSEXP, SEXP ySEXP) {
+// fast_greedy_knapsack
+List fast_greedy_knapsack(NumericVector v, NumericVector w, int W);
+RcppExport SEXP _Lab6_fast_greedy_knapsack(SEXP vSEXP, SEXP wSEXP, SEXP WSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< int >::type x(xSEXP);
-    Rcpp::traits::input_parameter< int >::type y(ySEXP);
-    rcpp_result_gen = Rcpp::wrap(add_cpp(x, y));
+    Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type w(wSEXP);
+    Rcpp::traits::input_parameter< int >::type W(WSEXP);
+    rcpp_result_gen = Rcpp::wrap(fast_greedy_knapsack(v, w, W));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_Lab6_add_cpp", (DL_FUNC) &_Lab6_add_cpp, 2},
+    {"_Lab6_fast_greedy_knapsack", (DL_FUNC) &_Lab6_fast_greedy_knapsack, 3},
     {NULL, NULL, 0}
 };
 

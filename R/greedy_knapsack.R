@@ -33,8 +33,12 @@
 #' \url{https://en.wikipedia.org/wiki/Knapsack_problem#Greedy_approximation_algorithm}
 #'
 #' @export
-greedy_knapsack <- function(x, W) {
+greedy_knapsack <- function(x, W, fast = FALSE) {
   stopifnot(is.data.frame(x), is.numeric(W), W > 0)
+
+  if (fast) {
+    return(fast_greedy_knapsack(x$v, x$w, W))
+  }
 
   ord <- order(x$v / x$w, decreasing = TRUE)
   k <- sum(cumsum(as.numeric(x$w[ord])) <= W)
@@ -51,3 +55,17 @@ greedy_knapsack <- function(x, W) {
   }
   return(list(value = 0, elements = NA))
 }
+
+suppressWarnings(RNGversion(min(as.character(getRversion()), "3.5.3")))
+set.seed(42, kind = "Mersenne-Twister", normal.kind = "Inversion")
+n <- 2000
+knapsack_objects <- data.frame(
+  w = sample(1:4000, size = n, replace = TRUE),
+  v = runif(n = n, 0, 10000)
+)
+
+knapsack_objects2 <- data.frame(
+  w = c(1, 1000),
+  v = c(2, 1000)
+)
+
