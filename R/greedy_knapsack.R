@@ -35,34 +35,19 @@
 #' @export
 greedy_knapsack <- function(x, W) {
   stopifnot(is.data.frame(x), is.numeric(W), W > 0)
-  x <- x[x$w <= W, ]
 
-  if (nrow(x) == 0) {
-    return(list(value = 0, elements = NA))
+  ord <- order(x$v / x$w, decreasing = TRUE)
+  k <- sum(cumsum(as.numeric(x$w[ord])) <= W)
+  s1_elements <- ord[seq_len(k)]
+
+  s1_value <- sum(x$v[ord][seq_len(k)])
+  s2_index <- ord[k + 1]
+  s2_value <- x$v[ord[s2_index]]
+
+  if (s1_value > s2_value) {
+    return(list(value = s1_value, elements = s1_elements))
+  } else if (x$w[ord[s2_index]] <= W) {
+    return(list(value = s2_value, elements = ord[k + 1]))
   }
-
-  x$v_w <- x$v / x$w
-  x <- sort_by(x, ~ list(-v_w))
-  s1 <- list(value = 0, elements = c())
-  i <- 1
-  w <- 0
-
-  while (w + x$w[i] < W && i <= nrow(x)) {
-    w <- w + x$w[i]
-    s1$value <- s1$value + x$v[i]
-    s1$elements <- c(s1$elements, as.integer(rownames(x)[i]))
-
-    i <- i + 1
-  }
-
-  if (i <= nrow(x)) {
-    s2 <- list(value = x$v[i], elements = as.integer(rownames(x)[i]))
-  } else {
-    s2 <- list(value = 0, elements = NA)
-  }
-
-  if (s1$value > s2$value) {
-    return(s1)
-  }
-  return(s2)
+  return(list(value = 0, elements = NA))
 }
