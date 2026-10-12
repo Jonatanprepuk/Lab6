@@ -33,4 +33,7 @@ Brute Force Algorithm for Knapsack Problem
 x <- data.frame(w = c(2, 3, 4), v = c(3, 4, 5))
 knapsack_brute_force(x, W = 5)
 
+#' @references
+\url{https://en.wikipedia.org/wiki/Knapsack_problem#Greedy_approximation_algorithm}
+
 }
