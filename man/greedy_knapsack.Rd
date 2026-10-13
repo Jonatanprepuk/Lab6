@@ -4,7 +4,7 @@
 \alias{greedy_knapsack}
 \title{Greedy Approximation for the Knapsack Problem}
 \usage{
-greedy_knapsack(x, W)
+greedy_knapsack(x, W, fast = FALSE)
 }
 \arguments{
 \item{x}{A \code{\link[base]{data.frame}} with values and weights
@@ -17,6 +17,9 @@ the following columns with positive values:
 
 \item{W}{A positive \code{\link[base]{numeric}} giving the capacity
 of the knapsack.}
+
+\item{fast}{A \code{\link[base]{logical}} that runs Rcpp implementation
+when true, otherwise R implementation.}
 }
 \value{
 A \code{\link[base]{list}} with elements:
