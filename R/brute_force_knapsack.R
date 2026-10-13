@@ -17,13 +17,13 @@
 #'       included in the knapsack.}
 #'   }
 #'
+#' @references
+#' \url{https://en.wikipedia.org/wiki/Knapsack_problem}
+#'
 #' @examples
 #' x <- data.frame(w = c(2, 3, 4), v = c(3, 4, 5))
 #' knapsack_brute_force(x, W = 5)
-#'
-#' #' @references
-#' \url{https://en.wikipedia.org/wiki/Knapsack_problem#Greedy_approximation_algorithm}
-#'
+#' 
 #' @export
 brute_force_knapsack <- function(x, W) {
   stopifnot(is.data.frame(x), is.numeric(W))

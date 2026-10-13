@@ -48,5 +48,5 @@ greedy_knapsack(x, W = 5)
 
 }
 \references{
-\url{https://en.wikipedia.org/wiki/Knapsack_problem#Greedy_approximation_algorithm}
+\url{https://en.wikipedia.org/wiki/Knapsack_problem}
 }

@@ -29,12 +29,12 @@
 #'       included in the knapsack.}
 #'   }
 #'
+#' @references
+#' \url{https://en.wikipedia.org/wiki/Knapsack_problem}
+#'
 #' @examples
 #' x <- data.frame(w = c(2, 3, 4), v = c(3, 4, 5))
 #' greedy_knapsack(x, W = 5)
-#'
-#' @references
-#' \url{https://en.wikipedia.org/wiki/Knapsack_problem#Greedy_approximation_algorithm}
 #'
 #' @export
 greedy_knapsack <- function(x, W, fast = FALSE, ...) {
