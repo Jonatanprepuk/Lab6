@@ -3,5 +3,6 @@
 export(brute_force_knapsack)
 export(fast_greedy_knapsack)
 export(greedy_knapsack)
+export(knapsack_dynamic)
 importFrom(Rcpp,sourceCpp)
 useDynLib(Lab6, .registration = TRUE)

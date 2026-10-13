@@ -17,8 +17,10 @@
 #'   }
 #' @param W A positive \code{\link[base]{numeric}} giving the capacity
 #'   of the knapsack.
-#' @param fast A \code{\link[base]{logical}} that runs Rcpp implementation 
+#' @param fast A \code{\link[base]{logical}} that runs Rcpp implementation
 #'  when true, otherwise R implementation.
+#' @param ... Additional parameters, used to compare Rcpp
+#' implementation with \code{order()} with shell sort.
 #'
 #' @return A \code{\link[base]{list}} with elements:
 #'   \describe{
@@ -35,14 +37,14 @@
 #' \url{https://en.wikipedia.org/wiki/Knapsack_problem#Greedy_approximation_algorithm}
 #'
 #' @export
-greedy_knapsack <- function(x, W, fast = FALSE) {
+greedy_knapsack <- function(x, W, fast = FALSE, ...) {
   stopifnot(is.data.frame(x), is.numeric(W), W > 0)
 
   if (fast) {
     return(fast_greedy_knapsack(x$v, x$w, W))
   }
 
-  ord <- order(x$v / x$w, decreasing = TRUE)
+  ord <- order(x$v / x$w, decreasing = TRUE, ...)
   k <- sum(cumsum(as.numeric(x$w[ord])) <= W)
   s1_elements <- ord[seq_len(k)]
 

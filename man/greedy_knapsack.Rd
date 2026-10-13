@@ -4,7 +4,7 @@
 \alias{greedy_knapsack}
 \title{Greedy Approximation for the Knapsack Problem}
 \usage{
-greedy_knapsack(x, W, fast = FALSE)
+greedy_knapsack(x, W, fast = FALSE, ...)
 }
 \arguments{
 \item{x}{A \code{\link[base]{data.frame}} with values and weights
@@ -20,6 +20,9 @@ of the knapsack.}
 
 \item{fast}{A \code{\link[base]{logical}} that runs Rcpp implementation
 when true, otherwise R implementation.}
+
+\item{...}{Additional parameters, used to compare Rcpp
+implementation with \code{order()} with shell sort.}
 }
 \value{
 A \code{\link[base]{list}} with elements:

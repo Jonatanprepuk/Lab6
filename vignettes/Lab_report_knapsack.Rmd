@@ -1,0 +1,78 @@
+---
+title: "Lab Report Knapsack"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Lab6}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(Lab6)
+library(microbenchmark)
+
+suppressWarnings(RNGversion(min(as.character(getRversion()), "3.5.3")))
+set.seed(42, kind = "Mersenne-Twister", normal.kind = "Inversion")
+n <- 1000000
+knapsack_objects <- data.frame(
+  w = sample(1:4000, size = n, replace = TRUE),
+  v = runif(n = n, 0, 10000)
+)
+```
+
+
+## Lab Report 
+
+### Brute Force Algorithm
+### How much time does it takes to run the algorithm for n = 16 objects?
+```{r}
+microbenchmark(brute_force_knapsack(knapsack_objects[1:16, ], W = 3500))
+```
+
+### Dynamic Algorithm
+### How much time does it takes to run the algorithm for n = 500 objects?
+```{r}
+microbenchmark(knapsack_dynamic(knapsack_objects[1:500, ], W = 5000))
+```
+
+### Greedy Algorithm 
+### How much time does it takes to run the algorithm for n = 1000000 objects?
+```{r}
+microbenchmark(greedy_knapsack(knapsack_objects[1:1000000, ], W = 5000))
+```
+
+### Greedy RCpp
+```{r}
+x <- knapsack_objects
+
+microbenchmark(
+  slow = greedy_knapsack(x, W = 5000, fast = FALSE),
+  fast = greedy_knapsack(x, W = 5000, fast = TRUE),
+  times = 20
+)
+```
+
+#### What performance gain could you get by using Rcpp and C++?
+As we can see above, the "fast" Rcpp implementation is actually slower than the R implementation, at least for larger n. This is because the R implementation uses `order()`, which uses radix sort with a time complexity of $O(n)$, whereas the C++ sorting algorithm uses introsort, which is $O(n \log n)$.
+The Rcpp implementation could be improved by also using radix sort, or by not sorting all elements at the beginning. If $W$ is much smaller than the total weight of all items, this could improve performance, since we usually do not need all items to fill the knapsack.
+We have not focused on improving the Rcpp implementation due to lack of time, and because it is not the main focus of this course. 
+
+#### A more "fair" comparison
+Here we use shell sort in the `order()` function, this gives an _average_ complexity of $O(n \log n)$. 
+
+```{r}
+x <- knapsack_objects
+
+microbenchmark(
+  slow_shell = greedy_knapsack(x, W = 5000, fast = FALSE, method = "shell"),
+  fast = greedy_knapsack(x, W = 5000, fast = TRUE),
+  times = 20
+)
+```
