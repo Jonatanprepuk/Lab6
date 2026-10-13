@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/Jonatanprepuk/Lab6/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Jonatanprepuk/Lab6/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 This package implements three different algorithms to the [napsack

@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # Lab6
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/Jonatanprepuk/Lab6/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Jonatanprepuk/Lab6/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 This package implements three different algorithms to the [napsack problem](https://en.wikipedia.org/wiki/Knapsack_problem). 
