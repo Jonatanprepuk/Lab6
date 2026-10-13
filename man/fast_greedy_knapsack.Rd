@@ -2,18 +2,21 @@
 % Please edit documentation in R/RcppExports.R
 \name{fast_greedy_knapsack}
 \alias{fast_greedy_knapsack}
-\title{Add two integers using C++}
+\title{Greedy Approximation for the Knapsack Problem (C++)}
 \usage{
 fast_greedy_knapsack(v, w, W)
 }
 \arguments{
-\item{x}{First integer.}
+\item{v}{Numeric vector of item values.}
 
-\item{y}{Second integer.}
+\item{w}{Numeric vector of item weights.}
+
+\item{W}{Knapsack capacity.}
 }
 \value{
-The sum of x and y.
+A list with the total \code{value} and the selected \code{elements}.
 }
 \description{
-Add two integers using C++
+C++ implementation of Dantzig's greedy approximation, called by
+\code{greedy_knapsack()} when \code{fast = TRUE}.
 }

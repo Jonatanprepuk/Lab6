@@ -3,21 +3,21 @@
 // devtools::document()
 // devtools::load_all()
 
-// TEMPLATE CODE.
 #include <Rcpp.h>
 #include <numeric> 
 #include <list>
 using namespace Rcpp;
 
-// THIS documentation will be exported with roxygen2
 
-// TODO fix documentation here and in R file.
-
-//' Add two integers using C++
+//' Greedy Approximation for the Knapsack Problem (C++)
 //'
-//' @param x First integer.
-//' @param y Second integer.
-//' @return The sum of x and y.
+//' C++ implementation of Dantzig's greedy approximation, called by
+//' \code{greedy_knapsack()} when \code{fast = TRUE}.
+//'
+//' @param v Numeric vector of item values.
+//' @param w Numeric vector of item weights.
+//' @param W Knapsack capacity.
+//' @return A list with the total \code{value} and the selected \code{elements}.
 //' @export
 // [[Rcpp::export]]
 List fast_greedy_knapsack(NumericVector v, NumericVector w, int W){

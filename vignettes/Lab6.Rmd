@@ -20,7 +20,7 @@ library(microbenchmark)
 
 suppressWarnings(RNGversion(min(as.character(getRversion()), "3.5.3")))
 set.seed(42, kind = "Mersenne-Twister", normal.kind = "Inversion")
-n <- 1000000
+n <- 100
 knapsack_objects <- data.frame(
   w = sample(1:4000, size = n, replace = TRUE),
   v = runif(n = n, 0, 10000)
@@ -45,7 +45,7 @@ microbenchmark(greedy_knapsack(knapsack_objects[1:1000000, ], W = 5000))
 ### Greedy RCpp
 
 ```{r}
-x <- knapsack_objects[1:1000000, ]
+x <- knapsack_objects
 
 microbenchmark(
   slow = greedy_knapsack(x, W = 5000, fast = FALSE),

@@ -17,6 +17,8 @@
 #'   }
 #' @param W A positive \code{\link[base]{numeric}} giving the capacity
 #'   of the knapsack.
+#' @param fast A \code{\link[base]{logical}} that runs Rcpp implementation 
+#'  when true, otherwise R implementation.
 #'
 #' @return A \code{\link[base]{list}} with elements:
 #'   \describe{
@@ -55,17 +57,3 @@ greedy_knapsack <- function(x, W, fast = FALSE) {
   }
   return(list(value = 0, elements = NA))
 }
-
-suppressWarnings(RNGversion(min(as.character(getRversion()), "3.5.3")))
-set.seed(42, kind = "Mersenne-Twister", normal.kind = "Inversion")
-n <- 2000
-knapsack_objects <- data.frame(
-  w = sample(1:4000, size = n, replace = TRUE),
-  v = runif(n = n, 0, 10000)
-)
-
-knapsack_objects2 <- data.frame(
-  w = c(1, 1000),
-  v = c(2, 1000)
-)
-
