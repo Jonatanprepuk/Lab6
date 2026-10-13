@@ -22,8 +22,8 @@
 #'
 #' @examples
 #' x <- data.frame(w = c(2, 3, 4), v = c(3, 4, 5))
-#' knapsack_brute_force(x, W = 5)
-#' 
+#' brute_force_knapsack(x, W = 5)
+#'
 #' @export
 brute_force_knapsack <- function(x, W) {
   stopifnot(is.data.frame(x), is.numeric(W))
