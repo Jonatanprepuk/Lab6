@@ -1,9 +1,10 @@
 Package: Lab6
-Title: What the Package Does (One Line, Title Case)
+Title: Algorithm's for Knapsack problem
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: c(
+    person("Albin", "Bäckström", , "albba064@student.liu.se", role = c("aut", "cre")),
+    person("Jonatan", "Prepuk", ,"jonpr189@student.liu.se", role= c("aut")))
+Description: This package have different algorithm's to solve the knapsack problem: Brute force, dynamic, greedy & greedy in Rcpp.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
