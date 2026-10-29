@@ -38,7 +38,24 @@
 #'
 #' @export
 greedy_knapsack <- function(x, W, fast = FALSE, ...) {
-  stopifnot(is.data.frame(x), is.numeric(W), W > 0)
+  stopifnot(
+    is.data.frame(x),
+    all(c("w", "v") %in% colnames(x)),
+    is.numeric(x$w),
+    is.numeric(x$v),
+    all(is.finite(x$w)),
+    all(is.finite(x$v)),
+    all(x$w > 0),
+    all(x$v > 0),
+    is.numeric(W),
+    W > 0,
+    is.logical(fast),
+    length(fast) == 1
+  )
+
+  if (!any(x$w <= W)) {
+    return(list(value = 0, elements = NA))
+  }
 
   if (fast) {
     return(fast_greedy_knapsack(x$v, x$w, W))
@@ -49,13 +66,17 @@ greedy_knapsack <- function(x, W, fast = FALSE, ...) {
   s1_elements <- ord[seq_len(k)]
 
   s1_value <- sum(x$v[ord][seq_len(k)])
-  s2_index <- ord[k + 1]
-  s2_value <- x$v[ord[s2_index]]
 
-  if (s1_value > s2_value) {
+  if (k == nrow(x)) {
     return(list(value = s1_value, elements = s1_elements))
-  } else if (x$w[ord[s2_index]] <= W) {
-    return(list(value = s2_value, elements = ord[k + 1]))
   }
-  return(list(value = 0, elements = NA))
+
+  s2_index <- ord[k + 1]
+  s2_value <- x$v[s2_index]
+
+  if (s2_value > s1_value && x$w[s2_index] <= W) {
+    return(list(value = s2_value, elements = s2_index))
+  }
+
+  return(list(value = s1_value, elements = s1_elements))
 }
