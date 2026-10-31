@@ -4,10 +4,10 @@
 #'   for all items. Each row represents one item and must contain
 #'   the following columns with positive values:
 #'   \describe{
-#'     \item{\code{w}}{A \code{numeric} representing the weight.}
+#'     \item{\code{w}}{A \code{numeric} representing the weight (integer).}
 #'     \item{\code{v}}{A \code{numeric} representing the value.}
 #'   }
-#' @param W A positive \code{\link[base]{numeric}} giving the capacity
+#' @param W A positive \code{\link[base]{numeric}} (integer) giving the capacity
 #'   of the knapsack.
 #'
 #' @return A \code{\link[base]{list}} with elements:
@@ -24,9 +24,26 @@ knapsack_dynamic <- function(x, W){
  n = nrow(x)
  weight <- x$w
  value <- x$v
- stopifnot(is.data.frame(x),
-           all(c(sign(c(weight, value, W))) == 1) # check that weight, value and W are all positive numerics
-           )
+ 
+ # check input, now checks for columns v/w, numeric type, NA 
+ #  and integer weights & W
+ stopifnot(
+   is.data.frame(x),
+   all(c("w", "v") %in% colnames(x)),  # check required columns exist
+   nrow(x) > 0,  # Check x is not empty
+   is.numeric(x$w),
+   is.numeric(x$v),
+   all(is.finite(x$w)),  # no NA, NaN and Inf allowed 
+   all(is.finite(x$v)),  # no NA, NaN and Inf allowed 
+   all(x$w > 0),
+   all(x$v > 0),
+   all(x$w == floor(x$w)),  # weights must be whole numbers
+   is.numeric(W),
+   length(W) == 1,  # W must be a single value
+   is.finite(W),  #  no NA, NaN and Inf allowed 
+   W > 0,
+   W == floor(W)  # W must be a whole number
+ )
  
  mat <- matrix(0, nrow = n+1, ncol = W +1)
  
