@@ -11,11 +11,11 @@ knapsack_dynamic(x, W)
 for all items. Each row represents one item and must contain
 the following columns with positive values:
 \describe{
-\item{\code{w}}{A \code{numeric} representing the weight.}
+\item{\code{w}}{A \code{numeric} representing the weight (integer).}
 \item{\code{v}}{A \code{numeric} representing the value.}
 }}
 
-\item{W}{A positive \code{\link[base]{numeric}} giving the capacity
+\item{W}{A positive \code{\link[base]{numeric}} (integer) giving the capacity
 of the knapsack.}
 }
 \value{
