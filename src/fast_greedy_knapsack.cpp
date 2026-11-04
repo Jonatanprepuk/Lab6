@@ -4,10 +4,9 @@
 // devtools::load_all()
 
 #include <Rcpp.h>
-#include <numeric> 
+#include <numeric>
 #include <list>
 using namespace Rcpp;
-
 
 //' Greedy Approximation for the Knapsack Problem (C++)
 //'
@@ -20,47 +19,85 @@ using namespace Rcpp;
 //' @return A list with the total \code{value} and the selected \code{elements}.
 //' @export
 // [[Rcpp::export]]
-List fast_greedy_knapsack(NumericVector v, NumericVector w, int W){
-    
+List fast_greedy_knapsack(NumericVector v, NumericVector w, double W)
+{
+
+    if (v.size() == 0)
+    {
+        stop("Size of v need to be greater than 0");
+    }
+
+    if (v.size() != w.size())
+    {
+        stop("v and w need to be the same size");
+    }
+
+    if (!std::isfinite(W) ||
+        W <= 0 ||
+        W != floor(W))
+    {
+        stop("W must be a positive integer");
+    }
+
+    for (int i = 0; i < v.size(); i++)
+    {
+        if (v[i] <= 0 || !std::isfinite(v[i]))
+        {
+            stop("Values must be greater than 0 and finite");
+        }
+
+        if (w[i] <= 0 ||
+            !std::isfinite(w[i]) ||
+            w[i] != floor(w[i]))
+        {
+            stop("Weights must be an integer greater than 0 and finite");
+        }
+    }
+
+    int capacity = static_cast<int>(W);
+
     NumericVector v_w = v / w;
     std::vector<int> idx(v_w.size());
     std::iota(idx.begin(), idx.end(), 0);
-    std::sort(idx.begin(), idx.end(), [&v_w](int a, int b){
-        return v_w[a] > v_w[b];
-    });
+    std::sort(idx.begin(), idx.end(), [&v_w](int a, int b)
+              { return v_w[a] > v_w[b]; });
 
     int s2_idx = -1;
     double totalWeight = 0;
     double totalValue = 0;
     std::list<int> elements;
 
-    for(size_t i = 0; i < idx.size(); i++){
-        if(w[idx[i]] > W) continue;
-        totalWeight += w[idx[i]];
+    for (size_t i = 0; i < idx.size(); i++)
+    {
+        if (w[idx[i]] > capacity)
+            continue;
 
-        if(totalWeight > W){
+        if (totalWeight + w[idx[i]] > capacity)
+        {
             s2_idx = i;
             break;
         }
+
+        totalWeight += w[idx[i]];
         totalValue += v[idx[i]];
         elements.push_back(idx[i] + 1);
     }
 
-    if(s2_idx != -1 && totalValue < v[idx[s2_idx]]){
+    if (s2_idx != -1 && totalValue < v[idx[s2_idx]])
+    {
         int s2Element = idx[s2_idx] + 1;
         return List::create(
-            Named("value")    = v[idx[s2_idx]],
-            Named("elements") = s2Element
-        );
-    } else if(elements.size() == 0){
+            Named("value") = v[idx[s2_idx]],
+            Named("elements") = s2Element);
+    }
+    else if (elements.size() == 0)
+    {
         return List::create(
             Named("value") = 0.0,
-            Named("elements") = LogicalVector::create(NA_LOGICAL) 
-        );
+            Named("elements") = LogicalVector::create(NA_LOGICAL));
     }
 
     return List::create(
-    Named("value")    = totalValue,
-    Named("elements") = elements 
-  );
+        Named("value") = totalValue,
+        Named("elements") = elements);
 }

@@ -4,9 +4,9 @@
 \name{Lab6-package}
 \alias{Lab6}
 \alias{Lab6-package}
-\title{Lab6: What the Package Does (One Line, Title Case)}
+\title{Lab6: Algorithm's for Knapsack problem}
 \description{
-What the package does (one paragraph).
+This package have different algorithm's to solve the knapsack problem: Brute force, dynamic, greedy & greedy in Rcpp.
 }
 \seealso{
 Useful links:
@@ -17,11 +17,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com}
+\strong{Maintainer}: Albin Bäckström \email{albba064@student.liu.se}
 
 Authors:
 \itemize{
-  \item First Last \email{first.last@example.com}
+  \item Albin Bäckström \email{albba064@student.liu.se}
+  \item Jonatan Prepuk \email{jonpr189@student.liu.se}
 }
 
 }

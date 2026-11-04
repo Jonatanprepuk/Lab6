@@ -39,6 +39,15 @@
 #' @export
 greedy_knapsack <- function(x, W, fast = FALSE, ...) {
   stopifnot(
+    is.logical(fast),
+    length(fast) == 1
+  )
+
+  if (fast) {
+    return(fast_greedy_knapsack(x$v, x$w, W))
+  }
+
+  stopifnot(
     is.data.frame(x),
     all(c("w", "v") %in% colnames(x)),
     is.numeric(x$w),
@@ -48,17 +57,11 @@ greedy_knapsack <- function(x, W, fast = FALSE, ...) {
     all(x$w > 0),
     all(x$v > 0),
     is.numeric(W),
-    W > 0,
-    is.logical(fast),
-    length(fast) == 1
+    W > 0
   )
 
   if (!any(x$w <= W)) {
     return(list(value = 0, elements = NA))
-  }
-
-  if (fast) {
-    return(fast_greedy_knapsack(x$v, x$w, W))
   }
 
   ord <- order(x$v / x$w, decreasing = TRUE, ...)

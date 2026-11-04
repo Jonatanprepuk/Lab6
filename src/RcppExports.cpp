@@ -11,14 +11,14 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // fast_greedy_knapsack
-List fast_greedy_knapsack(NumericVector v, NumericVector w, int W);
+List fast_greedy_knapsack(NumericVector v, NumericVector w, double W);
 RcppExport SEXP _Lab6_fast_greedy_knapsack(SEXP vSEXP, SEXP wSEXP, SEXP WSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type w(wSEXP);
-    Rcpp::traits::input_parameter< int >::type W(WSEXP);
+    Rcpp::traits::input_parameter< double >::type W(WSEXP);
     rcpp_result_gen = Rcpp::wrap(fast_greedy_knapsack(v, w, W));
     return rcpp_result_gen;
 END_RCPP

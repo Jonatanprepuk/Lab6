@@ -11,17 +11,18 @@ knapsack_objects2 <- data.frame(
   v = c(2, 1000)
 )
 
-test_that("Correct object is returned", {
-  expect_silent(gk <- greedy_knapsack(x = knapsack_objects[1:8, ], W = 3500))
-  expect_named(gk, c("value", "elements"))
-})
-
-test_that("functions rejects errounous input.", {
-  expect_error(greedy_knapsack("hej", 3500))
-  expect_error(greedy_knapsack(x = knapsack_objects[1:8, ], W = -3500))
-})
 
 for (fast in c(FALSE, TRUE)) {
+  test_that("Correct object is returned", {
+    expect_silent(gk <- greedy_knapsack(x = knapsack_objects[1:8, ], W = 3500, fast = fast))
+    expect_named(gk, c("value", "elements"))
+  })
+
+  test_that("functions rejects errounous input.", {
+    expect_error(greedy_knapsack("hej", 3500))
+    expect_error(greedy_knapsack(x = knapsack_objects[1:8, ], W = -3500, fast = fast))
+  })
+
   test_that("Function return correct results.", {
     gk <- greedy_knapsack(x = knapsack_objects[1:8, ], W = 3500, fast = fast)
     expect_equal(round(gk$value), 15428)
