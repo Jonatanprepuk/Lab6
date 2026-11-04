@@ -17,16 +17,31 @@
 #'       included in the knapsack.}
 #'   }
 #'
+#' @references
+#' \url{https://en.wikipedia.org/wiki/Knapsack_problem}
+#'
 #' @examples
 #' x <- data.frame(w = c(2, 3, 4), v = c(3, 4, 5))
-#' knapsack_brute_force(x, W = 5)
+#' brute_force_knapsack(x, W = 5)
 #'
 #' @export
 brute_force_knapsack <- function(x, W) {
-  stopifnot(is.data.frame(x), is.numeric(W))
+  stopifnot(
+    is.data.frame(x),
+    all(c("w", "v") %in% colnames(x)),
+    is.numeric(x$w),
+    is.numeric(x$v),
+    all(is.finite(x$w)),
+    all(is.finite(x$v)),
+    all(x$w > 0),
+    all(x$v > 0),
+    is.numeric(W),
+    W > 0
+  )
 
   n <- nrow(x)
   highest_values <- 0
+  elements <- 0L
 
   for (i in 1:(2^n - 1)) {
     subset <- as.logical(intToBits(i)[1:n])
@@ -34,7 +49,8 @@ brute_force_knapsack <- function(x, W) {
     weight <- sum(x$w[subset])
     value <- sum(x$v[subset])
 
-    if (weight < W && value > highest_values) {
+
+    if (weight <= W && value > highest_values) {
       elements <- which(subset)
       highest_values <- value
     }

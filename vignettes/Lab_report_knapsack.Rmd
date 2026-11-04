@@ -1,0 +1,106 @@
+---
+title: "Lab Report Knapsack"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Lab6}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include=FALSE}
+library(Lab6)
+
+suppressWarnings(RNGversion(min(as.character(getRversion()), "3.5.3")))
+set.seed(42, kind = "Mersenne-Twister", normal.kind = "Inversion")
+n <- 1000000
+knapsack_objects <- data.frame(
+  w = sample(1:4000, size = n, replace = TRUE),
+  v = runif(n = n, 0, 10000)
+)
+```
+
+
+## Lab Report 
+
+### Brute Force Algorithm
+### How much time does it takes to run the algorithm for n = 16 objects?
+```{r}
+microbenchmark::microbenchmark(brute_force_knapsack(knapsack_objects[1:16, ], W = 3500))
+```
+
+### Dynamic Algorithm
+### How much time does it takes to run the algorithm for n = 500 objects?
+```{r}
+microbenchmark::microbenchmark(knapsack_dynamic(knapsack_objects[1:500, ], W = 5000))
+```
+
+### Greedy Algorithm 
+### How much time does it takes to run the algorithm for n = 1000000 objects?
+```{r}
+microbenchmark::microbenchmark(greedy_knapsack(knapsack_objects[1:1000000, ], W = 5000))
+```
+
+
+### What performance gain could you get by trying to improving your code?
+
+#### Brute force
+The operations slowing down `brute_force_knapsack` are the `$` operator, the construction of the different subsets, and the `sum` operation. This could be improved by extracting the value and weight vectors once before the loop, and by vectorizing the subset evaluation, for example by representing all subsets as a binary matrix and computing all weights and values at once with matrix multiplication.
+
+Such improvements would reduce the runtime by a constant factor. However, since the algorithm is $O(2^n)$, the runtime doubles with every additional item, so even a large constant-factor speed-up only allows a few more items within the same time. The algorithm is therefore not suitable for large $n$, and we have not implemented these improvements.
+
+#### Greedy 
+Initially, the greedy algorithm sorted the entire data frame and built the solution in a for loop, appending each selected item with `c()`. Profiling with `profvis` showed that this was highly inefficient: sorting the data frame was costly, and growing a vector with `c()` copies the whole vector on every iteration, giving $O(k^2)$ copying and frequent garbage collection.
+
+After rewriting the algorithm to only compute the sorting order and to select items using vectorized operations (`cumsum`), we saw a substantial increase in performance. Using the built-in function `order()` also lets us use radix sort, which makes the sorting $O(n)$ instead of $O(n \log n)$. Since the rest of the algorithm is also linear, the whole algorithm now runs in $O(n)$ time.
+
+#### Dynamic
+One of the main contributors for the time and memory usage in the `knapsack_dynamic()` - function is the use of 
+`max()` inside the `else{}` statment on lines 39-44. We instead perform a conditional check by replacing lines 40-42 with the code in 
+the chunk below, the execution time decreases by approximatly 60\%. 
+```{r, eval = FALSE}
+without_item <- mat[i, capacity + 1]
+ 
+with_item <- value[i] + mat[i, capacity - weight[i] + 1]
+ 
+if (with_item > without_item) {
+  mat[i + 1, capacity + 1] <- with_item
+} else {
+  mat[i + 1, capacity + 1] <- without_item
+}
+```
+
+### Greedy RCpp
+```{r}
+x <- knapsack_objects
+
+microbenchmark::microbenchmark(
+  slow = greedy_knapsack(x, W = 5000, fast = FALSE),
+  fast = greedy_knapsack(x, W = 5000, fast = TRUE),
+  times = 20
+)
+```
+
+#### What performance gain could you get by using Rcpp and C++?
+As we can see above, the "fast" Rcpp implementation is actually slower than the R implementation, at least for larger n. This is because the R implementation uses `order()`, which uses radix sort with a time complexity of $O(n)$, whereas the C++ sorting algorithm uses introsort, which is $O(n \log n)$.
+The Rcpp implementation could be improved by also using radix sort, or by not sorting all elements at the beginning. If $W$ is much smaller than the total weight of all items, this could improve performance, since we usually do not need all items to fill the knapsack.
+We have not focused on improving the Rcpp implementation due to lack of time, and because it is not the main focus of this course. 
+
+#### A more "fair" comparison
+Here we use shell sort in the `order()` function, this gives an _average_ complexity of $O(n \log n)$. 
+
+```{r}
+x <- knapsack_objects
+
+microbenchmark::microbenchmark(
+  slow_shell = greedy_knapsack(x, W = 5000, fast = FALSE, method = "shell"),
+  fast = greedy_knapsack(x, W = 5000, fast = TRUE),
+  times = 20
+)
+```

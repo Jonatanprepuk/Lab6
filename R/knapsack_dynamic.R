@@ -1,5 +1,5 @@
-#' Dynamic programming approach for the Knapsack problem 
-#' 
+#' Dynamic programming approach for the Knapsack problem
+#'
 #' @param x A \code{\link[base]{data.frame}} with values and weights
 #'   for all items. Each row represents one item and must contain
 #'   the following columns with positive values:
@@ -17,9 +17,7 @@
 #'       included in the knapsack.}
 #'   }
 #'
-#'@export
-
-
+#' @export
 knapsack_dynamic <- function(x, W){
  n = nrow(x)
  weight <- x$w
@@ -82,17 +80,3 @@ knapsack_dynamic <- function(x, W){
    elements = elements
  ))
 }
-
-
-# ------------------- test the function -------------
-# suppressWarnings(RNGversion(min(as.character(getRversion()),"3.5.3")))
-# 
-# set.seed(42, kind = "Mersenne-Twister", normal.kind = "Inversion")
-# n = 2000
-# knapsack_objects <- data.frame(w = sample(1:4000, size = n, replace = TRUE),
-#                                v = runif(n = n, 0, 10000))
-# rm(n)
-# 
-# knapsack_dynamic(x = knapsack_objects[1:8,], W = 3500)
-# 
-# knapsack_dynamic(x = knapsack_objects[1:8,], W = 2000)
